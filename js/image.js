@@ -11,6 +11,11 @@ const grayFilter = function(src, dst, width, height) {
       }
   }
 };
+//opencv 読み込み確認関数
+function onOpenCvReady() {
+  document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
+}
+
 let upobj = document.getElementById("sampleImage");
 upobj.addEventListener("change", function(evt){
   // 画像

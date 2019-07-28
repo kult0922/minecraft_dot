@@ -7,11 +7,13 @@
   </head>
   <body>
     <h1>Image APP</h1>
+    <p id="status">OpenCV.js is loading...</p>
     <input type="file" id="sampleImage"
     accept="image/png, image/jpeg">
     <!-- 画像表示 -->
     <canvas id="canvas" width="500" height="500"></canvas>
-     
+    <!-- opencv読み込み -->
+    <script async src=".\opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
     <!-- 画像処理スクリプト -->
      <script src="./js/image.js"></script>
   </body>
