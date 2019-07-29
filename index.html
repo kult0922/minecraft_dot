@@ -8,13 +8,20 @@
   <body>
     <h1>Image APP</h1>
     <p id="status">OpenCV.js is loading...</p>
-    <input type="file" id="sampleImage"
+
+    <!-- 読み込みボタン -->
+    <input type="file" id="fileInput"
     accept="image/png, image/jpeg">
-    <!-- 画像表示 -->
-    <canvas id="canvas" width="500" height="500"></canvas>
+    <!-- 画像変換ボタン -->
+    <input type="button" value="test" onClick="test()">
+
+    <!-- 画像表示 img -->
+    <img id="imgSrc" alt="No Image" width="400"/>
+    <!-- 画像表示 canvas -->
+    <canvas id="canvasOutput" ></canvas>
     <!-- opencv読み込み -->
     <script async src=".\opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
     <!-- 画像処理スクリプト -->
-     <script src="./js/image.js"></script>
+    <script src="./js/image.js"></script>
   </body>
 </html>
