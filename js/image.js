@@ -19,6 +19,17 @@ function grayscale(){
   dst.delete();
 }
 
+function resize() {
+  let src = cv.imread(imgElement);
+  let dst = new cv.Mat();
+  let dsize = new cv.Size(50, 50);
+  cv.resize(src, dst, dsize, 0, 0, cv.INTER_AREA);
+  cv.imshow('canvasOutput', dst);
+  src.delete();
+  dst.delete();
+}
+
+
 function test(){
   let src = cv.imread(imgElement);
   let dst = src.clone();
