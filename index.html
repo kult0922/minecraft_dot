@@ -4,6 +4,11 @@
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="./css/style.css">
+    <style>
+      #wool_black {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <h1>Image APP</h1>
@@ -13,15 +18,17 @@
     <input type="file" id="fileInput"
     accept="image/png, image/jpeg">
     <!-- 画像変換ボタン -->
-    <input type="button" value="resize" onClick="resize()">
+    <input type="button" value="resize" onClick="transfer(32, 32)">
 
     <!-- 画像表示 img -->
     <img id="imgSrc" alt="No Image" width="400"/>
+    <img id="wool_black"/>
     <!-- 画像表示 canvas -->
     <canvas id="canvasOutput" ></canvas>
     <!-- opencv読み込み -->
     <script async src=".\opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
     <!-- 画像処理スクリプト -->
+    <script src="./js/block_data.js"></script>
     <script src="./js/image.js"></script>
   </body>
 </html>
