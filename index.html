@@ -18,15 +18,17 @@
     <input type="file" id="fileInput"
     accept="image/png, image/jpeg">
     <!-- 画像変換ボタン -->
-    <input type="button" value="resize" onClick="transfer(128, 128)">
+    <input id="transferBtn" type="button" value="resize" onclick="transfer(128)">
 
     <!-- 画像表示 img -->
     <img id="imgSrc" alt="No Image" width="400"/>
     <img id="wool_black"/>
-    <!-- 画像表示 canvas -->
+    <!-- モザイク表示 canvas -->
+    <canvas id="canvasMosaic" ></canvas>
+    <!-- 結果表示 canvas -->
     <canvas id="canvasOutput" ></canvas>
     <!-- opencv読み込み -->
-    <script async src=".\opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>
+    <script async src="./opencv.js" type="text/javascript" onload="onOpenCvReady()"></script>
     <!-- 画像処理スクリプト -->
     <script src="./js/block_data.js"></script>
     <script src="./js/image.js"></script>

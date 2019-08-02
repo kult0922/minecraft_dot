@@ -1,16 +1,19 @@
-function img_read(path) {
-  return new Promise((resolve, reject) => {
+/* eslint-disable no-param-reassign */
+
+
+function imgRead(path) {
+  return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => {
       resolve(cv.imread(img));
-    }
+    };
     img.src = path;
   });
 }
 
-get_block_data = () => {
-  const block_data_by_name = {};
-  const block_data_by_id = [
+getBlockData = () => {
+  const blockDataByName = {};
+  const blockDataById = [
     {
       name: 'black',
       path: '../select_block/wool/wool_colored_black.png',
@@ -87,22 +90,22 @@ get_block_data = () => {
       name: 'sand_stone_smooth',
       path: '../select_block/sand/sandstone_smooth.png',
     },
-  ]
+  ];
 
-  block_data_by_id.forEach(async (value, id) => {
+  blockDataById.forEach(async (value, id) => {
     value.id = id;
-    value.data = await img_read(value.path);
-    //HSVに変換
-    let hsv = new cv.Mat();
-    let lab = new cv.Mat();
+    value.data = await imgRead(value.path);
+    // HSVに変換
+    const hsv = new cv.Mat();
+    const lab = new cv.Mat();
     cv.cvtColor(value.data, hsv, cv.COLOR_BGR2HSV, 0);
     cv.cvtColor(value.data, lab, cv.COLOR_BGR2Lab, 0);
     value.mean = await cv.mean(lab);
   });
 
-  block_data_by_id.forEach(async (value) => {
-    block_data_by_name[value.name] = value;
+  blockDataById.forEach(async (value) => {
+    blockDataByName[value.name] = value;
   });
 
-  return { block_data_by_id, block_data_by_name };
-}
+  return { blockDataById, blockDataByName };
+};
