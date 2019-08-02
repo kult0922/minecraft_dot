@@ -10,7 +10,6 @@ function onOpenCvReady() {
     const block_data = await get_block_data(); 
     block_data_by_id  = block_data['block_data_by_id'];
     block_data_by_name = block_data['block_data_by_name'];
-    
   }
 }
 
@@ -18,18 +17,28 @@ function onOpenCvReady() {
 // 画像がアップロードされたら更新
 inputElement.addEventListener('change', function(evt){
   imgElement.src = URL.createObjectURL(evt.target.files[0]);
+  src_width = imgElement.width
+  src_height = imgElement.height
 }, false);
 
+function resize_by_width(src, dst, width) {
+  scale = width / src.cols;
+  const height = parseInt(src.rows * scale)
+  cv.resize(src, dst, new cv.Size(width, height), 0, 0, cv.INTER_AREA);
+  return dst
+}
 
 // リサイズ関数 モザイク画像を作成する
-function transfer(width, height) {
+function transfer(width) {
   let src = cv.imread(imgElement);
   let dst = new cv.Mat();
   let dsize = new cv.Size(width, height);
-  cv.resize(src, dst, dsize, 0, 0, cv.INTER_AREA);
+
+  //cv.resize(src, dst, dsize, 0, 0, cv.INTER_AREA);
+  dst = resize_by_width(src, dst, width)
+  console.log(dst)
+
   let idMat = get_id_mat(dst);
-  console.log(idMat)
-  //let mosaicImg = cv.Mat.zeros(width * 16, height * 16, cv.CV_8UC3); <- これだと上書きされない
   let src_clone = src.clone();
   let mosaicSize = new cv.Size(width * 16, height * 16);
   let mosaicImg = new cv.Mat();
@@ -38,7 +47,7 @@ function transfer(width, height) {
     for (let x = 0; x < width; x++) {
       let rect = new cv.Rect(x * 16, y * 16, 16, 16);
       roi_img = mosaicImg.roi(rect);
-      console.log(block_data_by_id[idMat.ucharPtr(y,x)[0]].data)
+      console.log(idMat.ucharPtr(y, x)[0])
       block_data_by_id[idMat.ucharPtr(y, x)[0]].data.copyTo(roi_img);
     }
   }
@@ -50,14 +59,15 @@ function transfer(width, height) {
 
 function get_id_mat(srcImg) {
   idArray = cv.Mat.zeros(srcImg.cols, srcImg.rows, cv.CV_8U)
+  cv.cvtColor(srcImg, srcImg, cv.COLOR_BGR2Lab, 0);
   for (let y = 0; y < srcImg.cols; y++) {
     for (let x = 0; x < srcImg.rows; x++) {
-      let minId = [765, 0];
+      let minId = [1000000, 0];
       block_data_by_id.forEach((block) => {
         let diff = 0;
-        diff += Math.abs(srcImg.ucharPtr(y, x)[0] - block.mean[0]);
-        diff += Math.abs(srcImg.ucharPtr(y, x)[1] - block.mean[1]);
-        diff += Math.abs(srcImg.ucharPtr(y, x)[2] - block.mean[2]);
+        diff += parseInt(srcImg.ucharPtr(y, x)[0] - block.mean[0]);
+        diff += parseInt(srcImg.ucharPtr(y, x)[1] - block.mean[1]);
+        diff += parseInt(srcImg.ucharPtr(y, x)[2] - block.mean[2]);
 
         if (diff < minId[0]) {
           minId[0] = diff;
@@ -65,7 +75,6 @@ function get_id_mat(srcImg) {
         }
       });
       idArray.ucharPtr(y, x)[0] = minId[1]
-      //console.log(minId[1])
     }
   }
   return idArray
