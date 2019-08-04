@@ -18,7 +18,7 @@ function getIdMat(srcImg) {
       const minId = [1000000, 0];
       blockDataById.forEach((block) => {
         let diff = 0;
-        diff += ((srcImg.ucharPtr(y, x)[0] - block.mean[0]) * 255 / 100) ** 2;
+        diff += ((srcImg.ucharPtr(y, x)[0] - block.mean[0]) * 100 / 255) ** 2;
         diff += (srcImg.ucharPtr(y, x)[1] - block.mean[1]) ** 2;
         diff += (srcImg.ucharPtr(y, x)[2] - block.mean[2]) ** 2;
 
@@ -28,6 +28,8 @@ function getIdMat(srcImg) {
         }
       });
       [, idArray.ucharPtr(y, x)[0]] = minId;
+      // ブロック数をカウントする
+      blockDataById[minId[1]].number += 1;
     }
   }
   return idArray;
@@ -62,6 +64,9 @@ function transfer(hb) { // eslint-disable-line no-unused-vars
   cv.imshow('canvasOutput', mosaicImg);
   src.delete();
   dst.delete();
+
+  // result
+  createTable(blockDataById, 'table'); // eslint-disable-line no-undef
 }
 
 // opencv 読み込み確認関数
