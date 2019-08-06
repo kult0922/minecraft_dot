@@ -1,6 +1,5 @@
 // global
 // let blockDataById;
-let blockDataDefault;
 let blockDataAll;
 
 // 画像読み込み
@@ -15,21 +14,27 @@ inputElement.addEventListener('change', (evt) => {
 // フィルターをかける関数
 function filteringBlockData(flag) {
   let blockDataCustom;
-  blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('glass'));
+  blockDataCustom = blockDataAll.filter(value => value.name.indexOf('glass'));
   if (flag === 'glass') {
-    blockDataCustom = blockDataAll.filter(value => value.name.indexOf('glass'));
+    blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('glass'));
+  }
+  if (flag === 'stone') {
+    blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('stone'));
+  }
+  if (flag === 'wood') {
+    blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('log') || !value.name.indexOf('planks'));
   }
 
   return blockDataCustom;
 }
 
-function getIdMat(srcImg) {
+function getIdMat(srcImg, data) {
   const idArray = cv.Mat.zeros(srcImg.rows, srcImg.cols, cv.CV_8U);
   cv.cvtColor(srcImg, srcImg, cv.COLOR_BGR2Lab, 0);
   for (let y = 0; y < srcImg.rows; y += 1) {
     for (let x = 0; x < srcImg.cols; x += 1) {
       const minId = [1000000, 0];
-      blockDataDefault.forEach((block, id) => {
+      data.forEach((block, id) => {
         let diff = 0;
         diff += ((srcImg.ucharPtr(y, x)[0] - block.mean[0]) * 100 / 255) ** 2;
         diff += (srcImg.ucharPtr(y, x)[1] - block.mean[1]) ** 2;
@@ -42,7 +47,7 @@ function getIdMat(srcImg) {
       });
       [, idArray.ucharPtr(y, x)[0]] = minId;
       // ブロック数をカウントする
-      blockDataDefault[minId[1]].number += 1;
+      data[minId[1]].number += 1; // eslint-disable-line no-param-reassign
     }
   }
   return idArray;
@@ -52,7 +57,8 @@ function getIdMat(srcImg) {
  * リサイズ関数 モザイク画像を作成する
  * @param {number} hb 横のブロック数
  */
-function transfer(hb) { // eslint-disable-line no-unused-vars
+function transfer(hb, blockType) { // eslint-disable-line no-unused-vars
+  const blockDataCustom = filteringBlockData('');
   const src = cv.imread(imgElement);
   const dst = new cv.Mat();
 
@@ -61,7 +67,7 @@ function transfer(hb) { // eslint-disable-line no-unused-vars
 
   cv.resize(src, dst, new cv.Size(hb, vb), 0, 0, cv.INTER_AREA);
 
-  const idMat = getIdMat(dst);
+  const idMat = getIdMat(dst, blockDataCustom);
   const srcClone = src.clone();
   const mosaicSize = new cv.Size(hb * 16, vb * 16);
   const mosaicImg = new cv.Mat();
@@ -70,7 +76,7 @@ function transfer(hb) { // eslint-disable-line no-unused-vars
     for (let x = 0; x < hb; x += 1) {
       const rect = new cv.Rect(x * 16, y * 16, 16, 16);
       const roi = mosaicImg.roi(rect);
-      blockDataDefault[idMat.ucharPtr(y, x)[0]].data.copyTo(roi);
+      blockDataCustom[idMat.ucharPtr(y, x)[0]].data.copyTo(roi);
     }
   }
   cv.imshow('canvasOutput', mosaicImg);
@@ -78,7 +84,7 @@ function transfer(hb) { // eslint-disable-line no-unused-vars
   dst.delete();
 
   // result
-  createTable(blockDataDefault, 'table'); // eslint-disable-line no-undef
+  createTable(blockDataCustom, 'table'); // eslint-disable-line no-undef
 }
 
 // opencv 読み込み確認関数
@@ -87,6 +93,6 @@ function onOpenCvReady() { // eslint-disable-line no-unused-vars
     // document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
     const blockDatabase = await getBlockData();
     blockDataAll = blockDatabase.blockData; // eslint-disable-line prefer-destructuring
-    blockDataDefault = blockDatabase.blockDataDefault; // eslint-disable-line prefer-destructuring
+    // blockDataDefault = blockDatabase.blockDataDefault;  eslint-disable-line prefer-destructuring
   };
 }
