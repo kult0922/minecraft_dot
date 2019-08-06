@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
 function createTable(data, tableId) { // eslint-disable-line no-unused-vars
+  // number = 0 を除外する
+  data = data.filter(value => value.number);
   const rows = [];
   const table = document.createElement('table');
 

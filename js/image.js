@@ -1,5 +1,7 @@
 // global
-let blockDataById;
+// let blockDataById;
+let blockDataDefault;
+let blockDataAll;
 
 // 画像読み込み
 const imgElement = document.getElementById('imgSrc');
@@ -10,13 +12,24 @@ inputElement.addEventListener('change', (evt) => {
   imgElement.src = URL.createObjectURL(evt.target.files[0]);
 }, false);
 
+// フィルターをかける関数
+function filteringBlockData(flag) {
+  let blockDataCustom;
+  blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('glass'));
+  if (flag === 'glass') {
+    blockDataCustom = blockDataAll.filter(value => value.name.indexOf('glass'));
+  }
+
+  return blockDataCustom;
+}
+
 function getIdMat(srcImg) {
   const idArray = cv.Mat.zeros(srcImg.rows, srcImg.cols, cv.CV_8U);
   cv.cvtColor(srcImg, srcImg, cv.COLOR_BGR2Lab, 0);
   for (let y = 0; y < srcImg.rows; y += 1) {
     for (let x = 0; x < srcImg.cols; x += 1) {
       const minId = [1000000, 0];
-      blockDataById.forEach((block) => {
+      blockDataDefault.forEach((block, id) => {
         let diff = 0;
         diff += ((srcImg.ucharPtr(y, x)[0] - block.mean[0]) * 100 / 255) ** 2;
         diff += (srcImg.ucharPtr(y, x)[1] - block.mean[1]) ** 2;
@@ -24,12 +37,12 @@ function getIdMat(srcImg) {
 
         if (diff < minId[0]) {
           minId[0] = diff;
-          minId[1] = block.id;
+          minId[1] = id;
         }
       });
       [, idArray.ucharPtr(y, x)[0]] = minId;
       // ブロック数をカウントする
-      blockDataById[minId[1]].number += 1;
+      blockDataDefault[minId[1]].number += 1;
     }
   }
   return idArray;
@@ -47,7 +60,6 @@ function transfer(hb) { // eslint-disable-line no-unused-vars
   const vb = parseInt(src.rows * scale, 10); // 縦のブロック数
 
   cv.resize(src, dst, new cv.Size(hb, vb), 0, 0, cv.INTER_AREA);
-  cv.imshow('canvasMosaic', dst);
 
   const idMat = getIdMat(dst);
   const srcClone = src.clone();
@@ -58,7 +70,7 @@ function transfer(hb) { // eslint-disable-line no-unused-vars
     for (let x = 0; x < hb; x += 1) {
       const rect = new cv.Rect(x * 16, y * 16, 16, 16);
       const roi = mosaicImg.roi(rect);
-      blockDataById[idMat.ucharPtr(y, x)[0]].data.copyTo(roi);
+      blockDataDefault[idMat.ucharPtr(y, x)[0]].data.copyTo(roi);
     }
   }
   cv.imshow('canvasOutput', mosaicImg);
@@ -66,15 +78,15 @@ function transfer(hb) { // eslint-disable-line no-unused-vars
   dst.delete();
 
   // result
-  createTable(blockDataById, 'table'); // eslint-disable-line no-undef
+  createTable(blockDataDefault, 'table'); // eslint-disable-line no-undef
 }
 
 // opencv 読み込み確認関数
 function onOpenCvReady() { // eslint-disable-line no-unused-vars
   cv.onRuntimeInitialized = async () => {
-    document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
-    console.log('cv ready');
-    const blockData = await getBlockData();
-    blockDataById = blockData.blockDataById; // eslint-disable-line prefer-destructuring
+    // document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
+    const blockDatabase = await getBlockData();
+    blockDataAll = blockDatabase.blockData; // eslint-disable-line prefer-destructuring
+    blockDataDefault = blockDatabase.blockDataDefault; // eslint-disable-line prefer-destructuring
   };
 }
