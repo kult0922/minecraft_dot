@@ -24,6 +24,12 @@ function filteringBlockData(flag) {
   if (flag === 'wood') {
     blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('log') || !value.name.indexOf('planks'));
   }
+  if (flag === 'wool') {
+    blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('wool'));
+  }
+  if (flag === 'survival') {
+    blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('block'));
+  }
 
   return blockDataCustom;
 }
@@ -58,7 +64,7 @@ function getIdMat(srcImg, data) {
  * @param {number} hb 横のブロック数
  */
 function transfer(hb, blockType) { // eslint-disable-line no-unused-vars
-  const blockDataCustom = filteringBlockData('');
+  const blockDataCustom = filteringBlockData(blockType);
   const src = cv.imread(imgElement);
   const dst = new cv.Mat();
 
@@ -93,6 +99,5 @@ function onOpenCvReady() { // eslint-disable-line no-unused-vars
     // document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
     const blockDatabase = await getBlockData();
     blockDataAll = blockDatabase.blockData; // eslint-disable-line prefer-destructuring
-    // blockDataDefault = blockDatabase.blockDataDefault;  eslint-disable-line prefer-destructuring
   };
 }

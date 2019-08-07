@@ -477,8 +477,6 @@ getBlockData = () => {
 
   // const blockDataDefault = blockData.filter(value => value.name !== 'log_acacia_top');
   const blockDataDefault = blockData.filter(value => value.name.indexOf('glass'));
-  console.log(blockData.length);
-  console.log(blockDataDefault.length);
 
   blockData.forEach(async (value) => {
     blockDataByName[value.name] = value;

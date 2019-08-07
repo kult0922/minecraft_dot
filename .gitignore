@@ -1,3 +1,7 @@
 .vscode
 .DS_Store
 select_block/
+.eslintrc.js
+package-lock.json
+package.json
+node_modules/
