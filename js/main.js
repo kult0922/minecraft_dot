@@ -1,5 +1,4 @@
 // global
-// let blockDataById;
 let blockDataAll;
 
 // 画像読み込み
@@ -63,14 +62,23 @@ function getIdMat(srcImg, data) {
  * リサイズ関数 モザイク画像を作成する
  * @param {number} hb 横のブロック数
  */
-function transfer(hb, blockType) { // eslint-disable-line no-unused-vars
+function transfer() { // eslint-disable-line no-unused-vars
+  const blockType = document.getElementById('blockType').value;
   const blockDataCustom = filteringBlockData(blockType);
   const src = cv.imread(imgElement);
   const dst = new cv.Mat();
-
-  const scale = hb / src.cols;
-  const vb = parseInt(src.rows * scale, 10); // 縦のブロック数
-
+  let hb;
+  let vb;
+  let scale;
+  if (src.cols > src.rows) {
+    hb = Number(document.getElementById('sizeType').value);
+    scale = hb / src.cols;
+    vb = parseInt(src.rows * scale, 10);
+  } else {
+    vb = Number(document.getElementById('sizeType').value);
+    scale = vb / src.rows;
+    hb = parseInt(src.cols * scale, 10);
+  }
   cv.resize(src, dst, new cv.Size(hb, vb), 0, 0, cv.INTER_AREA);
 
   const idMat = getIdMat(dst, blockDataCustom);
@@ -90,7 +98,8 @@ function transfer(hb, blockType) { // eslint-disable-line no-unused-vars
   dst.delete();
 
   // result
-  createTable(blockDataCustom, 'table'); // eslint-disable-line no-undef
+  // createTable(blockDataCustom, 'table'); // eslint-disable-line no-undef
+  tableUpdate(blockDataCustom, 'table'); // eslint-disable-line no-undef
 }
 
 // opencv 読み込み確認関数

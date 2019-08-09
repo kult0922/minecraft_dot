@@ -1,18 +1,36 @@
 /* eslint-disable no-param-reassign */
-function createTable(data, tableId) { // eslint-disable-line no-unused-vars
+
+/* tbody要素のすべての行を削除 */
+const clearTableBody = (tbody) => {
+  while (tbody.rows.length > 0) {
+    tbody.deleteRow(-1);
+  }
+};
+
+/* tbody要素に行を追加 */
+const addTableRow = (tbody, rowData) => {
+  // img に展開
+  const img = document.createElement('img');
+  img.src = rowData.path;
+  const tr = tbody.insertRow(); // 末尾に行を作成
+  // 各列の要素（セル）を作成
+  let td = tr.insertCell();
+  td.appendChild(img);
+  td = tr.insertCell();
+  td.appendChild(document.createTextNode(rowData.name));
+  td = tr.insertCell();
+  td.appendChild(document.createTextNode(rowData.number));
+};
+
+function tableUpdate(data) { // eslint-disable-line no-unused-vars
   // number = 0 を除外する
   data = data.filter(value => value.number);
-  const rows = [];
-  const table = document.createElement('table');
+  const tbody = document.getElementById('tableBody');
 
-  for (let i = 0; i < data.length; i += 1) {
-    rows.push(table.insertRow(-1));
-    const cell = rows[i].insertCell(-1);
-    const img = document.createElement('img');
-    img.src = data[i].path;
-    cell.appendChild(img);
-    cell.appendChild(document.createTextNode(data[i].name));
-    cell.appendChild(document.createTextNode(data[i].number));
-  }
-  document.getElementById(tableId).appendChild(table);
+  // tbodyのクリア
+  clearTableBody(tbody);
+  // tbodyの作成
+  data.forEach((rowData) => {
+    addTableRow(tbody, rowData);
+  });
 }

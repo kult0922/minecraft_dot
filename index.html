@@ -13,24 +13,54 @@
   <body>
     <h1>Minecraft Dot-Pic Generator</h1>
     <!--p id="status">OpenCV.js is loading...</p -->
+    <!-- タイプセレクトボタン -->
+    <h2>
+      <select id="blockType">
+        <option value="default">デフォルト</option>
+        <option value="glass">ガラス</option>
+        <option value="stone">石</option>
+        <option value="wood">木</option>
+      </select>
+
+    <!-- サイズセレクトボタン -->
+      <select id="sizeType">
+        <option value="128">128</option>
+        <option value="64">64</option>
+        <option value="32">32</option>
+        <option value="16">16</option>
+      </select>
 
     <!-- 読み込みボタン -->
     <input type="file" id="fileInput"
     accept="image/png, image/jpeg">
+
     <!-- 画像変換ボタン -->
-    <input id="transferBtn" type="button" value="resize" onclick="transfer(128, 'glass')">
+    <input id="transferBtn" type="button" value="変換" onclick="transfer()">
+    </h2>
 
     <!-- 画像表示 img -->
-    <img id="imgSrc" alt="No Image" width="400"/>
+    <img id="imgSrc" width="400"/>
     <!-- 結果表示 canvas -->
     <canvas id="canvasOutput" ></canvas>
     <!-- table -->
-    <div id="table"></div>      
+    <div>
+      <table id="table">
+        <thead id="tableHeader">
+          <tr>
+            <th></th>
+            <th>ブロック名</th>
+            <th>使用個数</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+      </table>
+    </div>
     <!-- opencv読み込み -->
     <script async src="./opencv.js" type="text/javascript" onload="onOpenCvReady()"></script>
     <!-- 画像処理スクリプト -->
     <script src="./js/block_data.js"></script>
-    <script src="./js/image.js"></script>
+    <script src="./js/main.js"></script>
     <!-- テーブル表示スクリプト -->
     <script src="./js/table.js"></script>
   </body>
