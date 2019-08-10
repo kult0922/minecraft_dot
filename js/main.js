@@ -65,6 +65,10 @@ function getIdMat(srcImg, data) {
 function transfer() { // eslint-disable-line no-unused-vars
   const blockType = document.getElementById('blockType').value;
   const blockDataCustom = filteringBlockData(blockType);
+  // blockDataの個数を初期化
+  blockDataCustom.forEach((value) => {
+    value.number = 0; // eslint-disable-line no-param-reassign
+  });
   const src = cv.imread(imgElement);
   const dst = new cv.Mat();
   let hb;
