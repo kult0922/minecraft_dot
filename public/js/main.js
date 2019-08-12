@@ -5,6 +5,7 @@ let blockDataAll;
 const input = document.getElementById('fileInput');
 const inputElement = document.getElementById('inputElement');
 
+// 画像をcanvasに読み込む
 function load(file, callback) {
   const options = {
     maxWidth: 500,
@@ -22,12 +23,8 @@ function load(file, callback) {
 
 // 画像がアップロードされたら更新
 input.addEventListener('change', (evt) => {
-  // 選択中のファイルの一つ目
   const file = evt.target.files[0];
-  // ファイルを選択しなかった場合
   if (!file) return;
-  // ファイル形式
-  console.log(file.type);
   // 読み込み用の関数で読み込み完了時に、HTMLにcanvas追加
   load(file, (canvas) => {
     canvas.id = 'canvasInput'; // eslint-disable-line no-param-reassign

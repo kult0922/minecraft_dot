@@ -1,6 +1,5 @@
 <!-- TODO -->
 
-<!-- アプリの使い方の文章 -->
 <!-- twitter　シェア機能 -->
 <!-- ブロックの日本語名 -->
 <!-- 完成画像を画面に収まるようにする -->
@@ -39,12 +38,53 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
     <script src="assets/js/avantui.js"></script>
 
-    <h1>Minecraft Pic2Block</h1>
+    <!-- Navigation Var-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+            <span class="text-primary">P</span>ic2<span class="text-success">B</span>lock for Minecraft
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDark" aria-controls="navbarDark" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarDark">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://twitter.com/KK_sep_TT">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1>Minecraft block generator</h1>
+
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">使い方</h5>
+          <p>1. 画像をアップロード</p>
+          <p>2. 使うブロックのタイプと完成ドット絵の大きさを選択</p>
+          <p>3. 変換ボタンを押す</p>
+          <p>4. 画像がマインクラフトのブロックに変換されます！</p>
+        </div>
+    </div>
+
+    <!-- 読み込みボタン -->
+  <p>
+    <div class="col-sm-3">
+      <label for="custom-file" class="control-label col-sm-9">画像をアップロード</label>
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="fileInput" accept="image/png, image/jpeg">
+        <label class="custom-file-label" for="customFile">Choose image</label>
+      </div>
+    </div>
+  </p>
 
     <!-- サイズセレクトボタン -->
     <p>
       <div class="form-group">
-        <label for="sizeselect" class="control-label col-sm-3">大きさ</label>
+        <label for="sizeType" class="control-label col-sm-3">大きさ</label>
         <div class="col-sm-3">
           <select class="custom-select custom-sm" id="sizeType" name="sizeselect">
             <option value="128" selected="selected">128</option>
@@ -71,22 +111,18 @@
       </div>
     </p>
 
-    <!-- 読み込みボタン -->
-  <p>
-    <div class="col-sm-3">
-      <div class="custom-file">
-        <input type="file" class="custom-file-input" id="fileInput" accept="image/png, image/jpeg">
-        <label class="custom-file-label" for="customFile">Choose image</label>
-      </div>
-    </div>
-  </p>
-
     <!-- 画像変換ボタン -->
     <p>
       <div class="col-sm-3">
         <button type="button" class="btn btn-success btn-lg" onclick="transfer()">変換</button>
       </div>
     </p>
+
+    <!-- Twitter-->
+    <div class="col-sm-3">
+    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="画像をマインクラフトブロックのドット絵に変換してくれるサイトだよ！" data-show-count="false">
+      Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </div>
 
     <div align="center" id="inputElement">
     </div>
