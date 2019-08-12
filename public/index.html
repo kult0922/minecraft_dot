@@ -3,7 +3,6 @@
 <!-- アプリの使い方の文章 -->
 <!-- twitter　シェア機能 -->
 <!-- ブロックの日本語名 -->
-<!-- スマホの画像がうまく表示されないバグの対応 -->
 <!-- 完成画像を画面に収まるようにする -->
 
 <!DOCTYPE html>
@@ -22,7 +21,11 @@
      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:500,600,700">
      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
      <link rel="stylesheet" href="assets/css/avantui.css">
+
+    <!-- imageLoader -->
+     <script src="https://cdn.rawgit.com/blueimp/JavaScript-Load-Image/v2.6.2/js/load-image.all.min.js"></script>
   </head>
+
   <body>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="/__/firebase/6.3.5/firebase-app.js"></script>
@@ -85,16 +88,14 @@
       </div>
     </p>
 
-    <!-- 画像表示 img -->
-    <div align="center">
-      <img id="imgSrc" width="600" class="img-thumbnail">
+    <div align="center" id="inputElement">
     </div>
+
     <!-- 結果表示 canvas -->
     <div align="center">
       <canvas id="canvasOutput"></canvas>
     </div>
-    <!-- table -->
-    <div class="container">
+
       <table id="table" class="table">
         <thead id="tableHeader">
           <tr>

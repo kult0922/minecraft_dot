@@ -2,12 +2,39 @@
 let blockDataAll;
 
 // 画像読み込み
-const imgElement = document.getElementById('imgSrc');
-const inputElement = document.getElementById('fileInput');
+const input = document.getElementById('fileInput');
+const inputElement = document.getElementById('inputElement');
+
+function load(file, callback) {
+  const options = {
+    maxWidth: 500,
+    canvas: true,
+  };
+
+  loadImage.parseMetaData(file, (data) => { // eslint-disable-line no-undef
+    if (data.exif) {
+      options.orientation = data.exif.get('Orientation');
+      console.log(`Orientation: ${options.orientation}`);
+    }
+    loadImage(file, callback, options); // eslint-disable-line no-undef
+  });
+}
 
 // 画像がアップロードされたら更新
-inputElement.addEventListener('change', (evt) => {
-  imgElement.src = URL.createObjectURL(evt.target.files[0]);
+input.addEventListener('change', (evt) => {
+  // 選択中のファイルの一つ目
+  const file = evt.target.files[0];
+  // ファイルを選択しなかった場合
+  if (!file) return;
+  // ファイル形式
+  console.log(file.type);
+  // 読み込み用の関数で読み込み完了時に、HTMLにcanvas追加
+  load(file, (canvas) => {
+    canvas.id = 'canvasInput'; // eslint-disable-line no-param-reassign
+    // 前に表示されていた画像を全削除
+    while (inputElement.firstChild) inputElement.removeChild(inputElement.firstChild);
+    inputElement.appendChild(canvas);
+  });
 }, false);
 
 // フィルターをかける関数
@@ -69,7 +96,8 @@ function transfer() { // eslint-disable-line no-unused-vars
   blockDataCustom.forEach((value) => {
     value.number = 0; // eslint-disable-line no-param-reassign
   });
-  const src = cv.imread(imgElement);
+  // const src = cv.imread(imgElement);
+  const src = cv.imread('canvasInput');
   const dst = new cv.Mat();
   let hb;
   let vb;
@@ -102,14 +130,12 @@ function transfer() { // eslint-disable-line no-unused-vars
   dst.delete();
 
   // result
-  // createTable(blockDataCustom, 'table'); // eslint-disable-line no-undef
   tableUpdate(blockDataCustom, 'table'); // eslint-disable-line no-undef
 }
 
 // opencv 読み込み確認関数
 function onOpenCvReady() { // eslint-disable-line no-unused-vars
   cv.onRuntimeInitialized = async () => {
-    // document.getElementById('status').innerHTML = 'OpenCV.js is ready.';
     const blockDatabase = await getBlockData();
     blockDataAll = blockDatabase.blockData; // eslint-disable-line prefer-destructuring
   };
