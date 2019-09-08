@@ -1,6 +1,9 @@
 // global
 let blockDataAll;
 
+// 保存ボタンを非表示
+document.getElementById('saveButton').style.display = 'none';
+
 // 画像読み込み
 const input = document.getElementById('fileInput');
 const inputElement = document.getElementById('inputElement');
@@ -37,21 +40,19 @@ input.addEventListener('change', (evt) => {
 // フィルターをかける関数
 function filteringBlockData(flag) {
   let blockDataCustom;
-  blockDataCustom = blockDataAll.filter(value => value.name.indexOf('glass'));
+
   if (flag === 'glass') {
     blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('glass'));
-  }
-  if (flag === 'stone') {
+  } else if (flag === 'stone') {
     blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('stone'));
-  }
-  if (flag === 'wood') {
+  } else if (flag === 'wood') {
     blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('log') || !value.name.indexOf('planks'));
-  }
-  if (flag === 'wool') {
+  } else if (flag === 'wool') {
     blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('wool'));
-  }
-  if (flag === 'survival') {
+  } else if (flag === 'survival') {
     blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('block'));
+  } else { // デフォルト
+    blockDataCustom = blockDataAll.filter(value => value.name.indexOf('glass'));
   }
 
   return blockDataCustom;
@@ -128,6 +129,24 @@ function transfer() { // eslint-disable-line no-unused-vars
 
   // result
   tableUpdate(blockDataCustom, 'table'); // eslint-disable-line no-undef
+
+  // 保存ボタン表示
+  document.getElementById('saveButton').style.display = 'block';
+}
+
+function saveImage() { // eslint-disable-line no-unused-vars
+  const canvas = document.getElementById('canvasOutput');
+  const downloadLink = document.getElementById('download_link');
+  const filename = 'minecraft_dot.png';
+
+  if (canvas.msToBlob) {
+    const blob = canvas.msToBlob();
+    window.navigator.msSaveBlob(blob, filename);
+  } else {
+    downloadLink.href = canvas.toDataURL('image/png');
+    downloadLink.download = filename;
+    downloadLink.click();
+  }
 }
 
 // opencv 読み込み確認関数

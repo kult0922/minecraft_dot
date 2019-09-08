@@ -1,6 +1,7 @@
 <!-- TODO -->
 
 <!-- twitter　シェア機能 -->
+<!-- 画像保存ボタン -->
 <!-- ブロックの日本語名 -->
 <!-- 完成画像を画面に収まるようにする -->
 
@@ -117,6 +118,16 @@
         <button type="button" class="btn btn-success btn-lg" onclick="transfer()">変換</button>
       </div>
     </p>
+
+    <!-- 画像保存ボタン -->
+    <p>
+      <div class="col-sm-3">
+        <button id="saveButton" type="button" class="btn btn-info btn-lg" onclick="saveImage()">画像を保存</button>
+      </div>
+    </p>
+
+    <!--ダウンロード用リンク-->
+    <a id="download_link"></a>
 
     <!-- Twitter-->
     <div class="col-sm-3">

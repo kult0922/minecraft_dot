@@ -290,10 +290,6 @@ getBlockData = () => {
       path: '../select_block/ore/diamond_ore.png',
     },
     {
-      name: 'pumpkin_face_on',
-      path: '../select_block/produce/pumpkin_face_on.png',
-    },
-    {
       name: 'melon_side',
       path: '../select_block/produce/melon_side.png',
     },
