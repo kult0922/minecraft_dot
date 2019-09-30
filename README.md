@@ -1,6 +1,6 @@
 # MINECRAFT MOSAIC ART
 
-![monaliza](https://github.com/Kult0922/minecraft_dot/master/image/mona.png)
+![monaliza](https://github.com/Kult0922/minecraft_dot/blob/master/image/mona.png)
 
 ## 使い方
 １．画像を選択してアップロード
