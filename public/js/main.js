@@ -149,6 +149,10 @@ function saveImage() { // eslint-disable-line no-unused-vars
   }
 }
 
+// ボタンセット
+document.getElementById('transButton').addEventListener('click', transfer);
+document.getElementById('saveButton').addEventListener('click', saveImage);
+
 // opencv 読み込み確認関数
 function onOpenCvReady() { // eslint-disable-line no-unused-vars
   cv.onRuntimeInitialized = async () => {
