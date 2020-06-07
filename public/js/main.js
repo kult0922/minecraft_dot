@@ -1,6 +1,18 @@
 // global
 let blockDataAll;
 
+// add
+const blockDatabase = getBlockData();
+blockDataAll = blockDatabase.blockData; // eslint-disable-line prefer-destructuring
+/*
+cv.onRuntimeInitialized = async () => {
+  alert("on opencv ready")
+  const blockDatabase = await getBlockData();
+  blockDataAll = blockDatabase.blockData; // eslint-disable-line prefer-destructuring
+};
+*/
+
+
 // 保存ボタンを非表示
 document.getElementById('saveButton').style.display = 'none';
 
@@ -66,6 +78,8 @@ function getIdMat(srcImg, data) {
       const minId = [1000000, 0];
       data.forEach((block, id) => {
         let diff = 0;
+        // console.log(srcImg.ucharPtr(y, x));
+        // diff += ((srcImg.ucharPtr(y, x)[0] - block.mean[0]) * 100 / 255) ** 2;
         diff += ((srcImg.ucharPtr(y, x)[0] - block.mean[0]) * 100 / 255) ** 2;
         diff += (srcImg.ucharPtr(y, x)[1] - block.mean[1]) ** 2;
         diff += (srcImg.ucharPtr(y, x)[2] - block.mean[2]) ** 2;
@@ -154,9 +168,12 @@ document.getElementById('transButton').addEventListener('click', transfer);
 document.getElementById('saveButton').addEventListener('click', saveImage);
 
 // opencv 読み込み確認関数
+/*
 function onOpenCvReady() { // eslint-disable-line no-unused-vars
   cv.onRuntimeInitialized = async () => {
+    alert("on opencv ready")
     const blockDatabase = await getBlockData();
     blockDataAll = blockDatabase.blockData; // eslint-disable-line prefer-destructuring
   };
 }
+*/
