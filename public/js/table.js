@@ -17,7 +17,7 @@ const addTableRow = (tbody, rowData) => {
   let td = tr.insertCell();
   td.appendChild(img);
   td = tr.insertCell();
-  td.appendChild(document.createTextNode(rowData.name));
+  td.appendChild(document.createTextNode(rowData.jname));
   td = tr.insertCell();
   td.appendChild(document.createTextNode(rowData.number));
 };

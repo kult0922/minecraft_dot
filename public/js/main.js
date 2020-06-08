@@ -11,7 +11,6 @@ let blockDataAll;
 
 const blockDatabase = getBlockData();
 blockDataAll = blockDatabase.blockData; // eslint-disable-line prefer-destructuring
-console.log(blockDataAll.length);
   
 /*
 cv.onRuntimeInitialized = async () => {
@@ -93,18 +92,9 @@ function getIdMat(srcImg, data) {
         diff += (srcImg.ucharPtr(y, x)[1] - block.mean[1]) ** 2;
         diff += (srcImg.ucharPtr(y, x)[2] - block.mean[2]) ** 2;
 
-        if (x === 0 && y === 0) {
-          console.log(srcImg.ucharPtr(y, x));
-          console.log(block.mean);
-        }
-
         if (diff < minId[0]) {
           minId[0] = diff;
           minId[1] = id;
-        }
-        if (x === 0 && y === 0) {
-          console.log(srcImg.ucharPtr(y, x));
-          console.log(block.mean);
         }
       });
       [, idArray.ucharPtr(y, x)[0]] = minId;
