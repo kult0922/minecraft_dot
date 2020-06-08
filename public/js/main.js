@@ -2,8 +2,17 @@
 let blockDataAll;
 
 // add
+/*
+  const blockDatabase = getBlockData();
+  blockDataAll = blockDatabase.blockData; // eslint-disable-line prefer-destructuring
+  console.log(blockDataAll.length);
+  j
+  */
+
 const blockDatabase = getBlockData();
 blockDataAll = blockDatabase.blockData; // eslint-disable-line prefer-destructuring
+console.log(blockDataAll.length);
+  
 /*
 cv.onRuntimeInitialized = async () => {
   alert("on opencv ready")
@@ -63,7 +72,7 @@ function filteringBlockData(flag) {
     blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('wool'));
   } else if (flag === 'survival') {
     blockDataCustom = blockDataAll.filter(value => !value.name.indexOf('block'));
-  } else { // デフォルト
+  } else { // デフォルト (ガラス以外)
     blockDataCustom = blockDataAll.filter(value => value.name.indexOf('glass'));
   }
 
@@ -83,6 +92,11 @@ function getIdMat(srcImg, data) {
         diff += ((srcImg.ucharPtr(y, x)[0] - block.mean[0]) * 100 / 255) ** 2;
         diff += (srcImg.ucharPtr(y, x)[1] - block.mean[1]) ** 2;
         diff += (srcImg.ucharPtr(y, x)[2] - block.mean[2]) ** 2;
+
+        if (x === 0 && y === 0) {
+          console.log(srcImg.ucharPtr(y, x));
+          console.log(block.mean);
+        }
 
         if (diff < minId[0]) {
           minId[0] = diff;
