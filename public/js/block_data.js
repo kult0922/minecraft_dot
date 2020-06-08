@@ -467,7 +467,7 @@ getBlockData = () => {
     value.number = 0;
     value.data = await imgRead(value.path);
     const lab = new cv.Mat();
-    cv.cvtColor(value.data, lab, cv.COLOR_BGR2HSV, 0);
+    cv.cvtColor(value.data, lab, cv.COLOR_BGR2Lab, 0);
     value.mean = await cv.mean(lab);
   });
 
