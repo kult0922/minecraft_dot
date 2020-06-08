@@ -74,6 +74,10 @@ function getIdMat(srcImg, data) {
           minId[0] = diff;
           minId[1] = id;
         }
+        if (x === 0 && y === 0) {
+          console.log(srcImg.ucharPtr(y, x));
+          console.log(block.mean);
+        }
       });
       [, idArray.ucharPtr(y, x)[0]] = minId;
       // ブロック数をカウントする
